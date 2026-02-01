@@ -21,17 +21,27 @@ Steps:
 Future work includes packaging the app as a standalone Android APK
 
 ## App Preview on an Android using Pydroid 3
+
 ### Search Screen
 Main screen upon launch which shows search bar
-![Search Screen](screenshots./homescreen.jpg)
+<p align="center">
+  <img src="screenshots./homescreen.jpg" width="400px">
+</p>
 
 ### Search Results
 Displays list of shows matching search
-![Search Results](screenshots./searchresults.jpg)
+<p align="center">
+  <img src="screenshots./searchresults.jpg" width="400px">
+</p>
 
 ### My Shows
-Displays your followed shows and buttons for checking for new episodes or removing show from list
-![My Shows Screen](screenshots./myshows.jpg)
+Displays your followed shows and buttons for checking new episodes or removing shows from list
+<p align="center">
+  <img src="screenshots./myshows.jpg" width="400px">
+</p>
 
 ### Checking for new episodes
-![Check for new episodes](screenshots./currentshow.jpg)
+<p align="center">
+  <img src="screenshots./currentshow.jpg" width="400px">
+</p>
+
