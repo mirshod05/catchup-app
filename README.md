@@ -19,3 +19,19 @@ Steps:
 3. Run `main.py` inside Pydroid
 
 Future work includes packaging the app as a standalone Android APK
+
+## App Preview on an Android using Pydroid 3
+### Search Screen
+Main screen upon launch which shows search bar
+![Search Screen](screenshots/homescreen.jpg)
+
+### Search Results
+Displays list of shows matching search
+![Search Results](screenshots/searchresults.jpg)
+
+### My Shows
+Displays your followed shows and buttons for checking for new episodes or removing show from list
+![My Shows Screen](screenshots/myshows.jpg)
+
+### Checking for new episodes
+![Check for new episodes](screenshots/currentshow.jpg)
