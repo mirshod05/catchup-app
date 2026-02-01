@@ -1,0 +1,299 @@
+# Root layout, contains screenmanager and bottom navigation bar
+
+BoxLayout:
+	orientation: "vertical"
+
+	ScreenManager:
+		id: screen_manager
+		SearchScreen:
+			name: "search"
+		MyShowsScreen:
+			name: "shows"
+			
+		AboutScreen:
+			name: "about"
+	
+	# Bottom navigation bar
+	BoxLayout:  
+        size_hint_y: None
+        height: "60dp"
+        spacing: 10
+        padding: 10
+        canvas.before:
+            Color:
+                rgba: 0.1, 0.1, 0.1, 1  # dark gray
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Button:
+            text: "Search"
+			font_name: "AppleGaramond.ttf"
+            on_press: screen_manager.current = "search"
+
+        Button:
+            text: "My Shows"
+			font_name: "AppleGaramond.ttf"
+            on_press: screen_manager.current = "shows"
+			
+		Button:
+			text: "About CatchUp"
+			font_name: "AppleGaramond.ttf"
+			on_press: screen_manager.current = "about"
+			
+# Search Screen, allows users to search for TV shows using TVMaze			
+<SearchScreen>:
+	BoxLayout:
+		orientation: "vertical"
+		padding: 20
+		spacing: 10
+		
+		canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: "catchuplogo.png"
+		
+		TextInput:
+			id: search_input
+			hint_text: "Search for a TV show"
+			size_hint_y: None
+			height: "50dp"
+			
+		Button: 
+			text: "Search"
+			font_name: "AppleGaramond.ttf"
+			size_hint_y: None
+			height: "50dp"
+			on_press: root.on_search_button()
+		
+		# Scrollable container for search results
+		ScrollView:
+			do_scroll_x: False
+			do_scroll_y: True
+			
+			GridLayout:
+				id: results_box
+				cols: 1
+				size_hint_y: None
+				height: self.minimum_height
+				spacing: 5
+				padding: 5
+				
+		
+# My shows screen; displays followed tv shows and episode actions			
+<MyShowsScreen>:
+	BoxLayout: 
+		orientation: "vertical"
+		padding: 20
+		spacing: 10
+		
+		canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: "catchuplogo.png"
+		
+		Label:
+			text: "My Shows:"
+			font_size: "32sp"
+			font_name: "AppleGaramond.ttf"
+			size_hint_y: None
+			height: "50dp"
+			color: 0, 0, 0, 1
+			
+		# Container for show cards with rounded background
+		BoxLayout:
+			padding: dp(10)
+			size_hint_y: 1
+			
+			canvas.before:
+				Color:
+					rgba: 0, 0, 0, 0.5
+				RoundedRectangle:
+					pos: self.pos
+					size: self.size
+					radius: [15]
+					
+			# Scrollable list of followed shows
+			ScrollView:
+				do_scroll_x: False
+				do_scroll_y: True
+			
+				GridLayout:
+					id: myshows_box
+					cols: 1
+					size_hint_y: None
+					height: self.minimum_height
+					spacing: dp(8)
+					padding: dp(10)
+		
+# MyShowsRow; Custom widget representing a followed show card		
+<MyShowsRow@BoxLayout>:
+	orientation: "horizontal"
+    size_hint_y: None
+    height: dp(140)
+    padding: dp(10)
+    spacing: dp(10)
+
+	# show poster
+    AsyncImage:
+        source: root.poster
+        size_hint: None, None
+        size: dp(90), dp(130)
+        allow_stretch: True
+        keep_ratio: True
+		
+	# show title
+	BoxLayout:
+		orientation: "vertical"
+		size_hint_x: 1
+		spacing: dp(5)
+		
+
+		Label:
+			text: root.title
+			bold: True
+			font_size: "16sp"
+			size_hint_y: None
+			height: self.texture_size[1]
+			halign: "center"
+			valign: "middle"
+			text_size: self.width, None
+
+		Label:
+			text: root.subtitle
+			font_size: "13sp"
+			size_hint_y: None
+			height: self.texture_size[1]
+			halign: "center"
+			valign: "middle"
+			text_size: self.width, None
+		
+	# action buttons (episode info & remove)
+	BoxLayout:
+		orientation: "vertical"
+		size_hint_x: None
+		width: dp(80)
+		spacing: dp(5)
+		Button:
+			text: "New Ep"
+			size_hint_y: None
+			height: dp(36)
+			text_size: self.width - dp(10), None
+			halign: "center"
+			valign: "middle"
+			on_release: root.screen.show_episode_info(root.show_id, root.title)
+		Button:
+			text: "Remove"
+			size_hint_y: None
+			on_release: root.screen.remove_refresh(root.show_id)
+
+# About screen; static app description and credits				
+<AboutScreen>:
+	BoxLayout:
+		orientation: "vertical"
+		padding: 20
+		spacing: 10
+		
+		canvas.before:
+			Rectangle:
+				pos: self.pos
+                size: self.size
+                source: "catchuplogo.png"
+		
+		Label:
+			text: "About CatchUp:"
+			font_size: "28sp"
+			font_name: "AppleGaramond.ttf"
+			color: 0.3, 0.3, 0.3, 1
+			bold: True
+			size_hint_y: None
+			height: self.texture_size[1]
+			
+		BoxLayout:
+			padding: dp(15)
+			size_hint_y: None
+			height: about_text.texture_size[1] + dp(30)
+			
+			canvas.before:
+				Color:
+					rgba: 0, 0, 0, 0.5
+				RoundedRectangle:
+					pos: self.pos
+					size: self.size
+					radius: [15]
+			Label:
+				id: about_text
+				text:
+					""" CatchUp helps you track your favorite TV shows and alerts you
+					whenever a new episode drops
+					\n
+					This app is built using python and kivy, and uses TVMaze free API
+					\n
+					Created by Mirshod Sobirov """
+				halign: "left"
+				valign: "top"
+				text_size: self.width, None
+				font_size: "12sp"
+				font_name: "AppleGaramond.ttf"
+			
+		ScrollView:
+			do_scroll_x: False
+			do_scroll_y: True
+			
+			GridLayout:
+				id: myshows_box
+				cols: 1
+				size_hint_y: None
+				height: self.minimum_height
+				row_default_height: "50dp"
+				row_force_default: True
+				spacing: 5
+				padding: 5
+		
+# SearchResultRow; custom widget for displaying search results		
+<SearchResultRow@BoxLayout>:
+    orientation: "horizontal"
+    size_hint_y: None
+    height: dp(140)
+    spacing: dp(10)
+    padding: dp(10)
+
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 0.6
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [14]
+
+    AsyncImage:
+        source: root.poster
+        size_hint: None, None
+        size: "90dp", "130dp"
+        allow_stretch: True
+        keep_ratio: True
+	
+	BoxLayout:
+		orientation: "vertical"
+		spacing: dp(6)
+
+		Label:
+			text: root.title
+			bold: True
+			font_size: "15sp"
+			halign: "left"
+			valign: "middle"
+			text_size: self.size
+			size_hint_y: None
+			height: dp(40)
+			color: 1, 1, 1, 1
+		
+		Widget: #spacer
+
+		Button:
+			text: root.button_text
+			size_hint_y: None
+			height: dp(36)
+			on_release: root.on_button_press()
